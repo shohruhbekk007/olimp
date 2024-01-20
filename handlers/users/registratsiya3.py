@@ -10,18 +10,13 @@ kanal_data = "-1001632556657"
 
 
 
-
-def fayl_6(t_ism):
-    with open("sinf4",'a') as fayl:
+def fayl_5(t_ism):
+    with open("sinf3",'a') as fayl:
         fayl.write(t_ism + "\n")
 
 
 
-
-
-
-
-@dp.callback_query_handler(text="4-sinf")
+@dp.callback_query_handler(text="3-sinf")
 async def senism(call: types.CallbackQuery):
     await call.message.delete()
     await call.message.answer(f"Toliq ism familyangizni kiriting: ")
@@ -108,6 +103,7 @@ async def admin_send(callback_query: types.CallbackQuery, state: FSMContext):
 
 
 
+
 @dp.callback_query_handler(state=sinf6.admin, text='ok')
 async def admin_send(callback_query: types.CallbackQuery, state: FSMContext):
     data = await state.get_data()
@@ -118,9 +114,9 @@ async def admin_send(callback_query: types.CallbackQuery, state: FSMContext):
     tuman = data.get("tuman")
     photo1 = data.get("photo")
     await callback_query.message.edit_reply_markup()
-    await callback_query.bot.send_photo(kanal_data, photo=photo1, caption=f"6-sinf \n\nTumaningiz: {tuman}\nMaktabingiz: {maktab}\nUqtuvchingiz: {uqtuvchi}\nUqtuvchingiz telefoni: {phone_number}\nSizning FISH: {fish}")
+    await callback_query.bot.send_photo(kanal_data, photo=photo1, caption=f"5-sinf \n\nTumaningiz: {tuman}\nMaktabingiz: {maktab}\nUqtuvchingiz: {uqtuvchi}\nUqtuvchingiz telefoni: {phone_number}\nSizning FISH: {fish}")
     # await callback_query.message.answer_photo(kanal_data, photo=photo1, caption=f"Tumaningiz: {tuman}\nMaktabingiz: {maktab}\nUqtuvchingiz: {uqtuvchi}\nUqtuvchingiz telefoni: {phone_number}\nSizning FISH: {fish}")
     await callback_query.message.answer("Movfaqiyatli ro'yhatdan o'tdingiz!")
     t_ism = f"{tuman}  {maktab}  {uqtuvchi}  {phone_number}  {fish}  + "
-    fayl_6(t_ism=t_ism)
+    fayl_5(t_ism=t_ism)
     await state.finish()

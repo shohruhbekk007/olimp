@@ -4,21 +4,28 @@ from keyboards.inline.age import ages
 from states.sinf6 import sinf6
 from keyboards.inline.tasdiqlash import tasdiqlash
 from aiogram.dispatcher.filters import state
+from keyboards.inline.age import ages
 from aiogram.dispatcher import FSMContext
+from aiogram.types import ReplyKeyboardRemove
 from keyboards.default.tumanlar import tumanlar
 kanal_data = "-1001632556657"
 
 
-
-
-def fayl_6(t_ism):
-    with open("sinf6",'w') as fayl:
+def fayl_4(t_ism):
+    with open("sinf6",'a') as fayl:
         fayl.write(t_ism + "\n")
 
 
 
 
 
+
+
+@dp.message_handler(text="⭐️ Start Registration", state="*")
+async def registration_as(message: types.Message):
+    await message.delete()
+    await message.answer_photo(photo=open("img/english.jpg", "rb"), caption="Sinfingizni kiriting? ", reply_markup=ages,)    
+    
 
 
 @dp.callback_query_handler(text="6-sinf")
@@ -76,7 +83,7 @@ async def tuman(message: types.Message, state: FSMContext):
     await state.update_data(
         {"tuman": tuman}
     )
-    await message.answer_photo(photo=open("img/card.gif", "rb"), caption="tolovni qilib skrinshot yuboring: ")
+    await message.answer_photo(photo=open("img/card.gif", "rb"), caption="tolovni qilib skrinshot yuboring: ", reply_markup=ReplyKeyboardRemove)
     await sinf6.next()
 
 
@@ -108,8 +115,10 @@ async def admin_send(callback_query: types.CallbackQuery, state: FSMContext):
 
 
 
+
 @dp.callback_query_handler(state=sinf6.admin, text='ok')
 async def admin_send(callback_query: types.CallbackQuery, state: FSMContext):
+    await callback_query.message.delete()
     data = await state.get_data()
     fish = data.get("FISH")
     maktab = data.get("maktab")
@@ -118,9 +127,9 @@ async def admin_send(callback_query: types.CallbackQuery, state: FSMContext):
     tuman = data.get("tuman")
     photo1 = data.get("photo")
     await callback_query.message.edit_reply_markup()
-    await callback_query.bot.send_photo(kanal_data, photo=photo1, caption=f"6-sinf \n\nTumaningiz: {tuman}\nMaktabingiz: {maktab}\nUqtuvchingiz: {uqtuvchi}\nUqtuvchingiz telefoni: {phone_number}\nSizning FISH: {fish}")
+    await callback_query.bot.send_photo(kanal_data, photo=photo1, caption=f"4-sinf \n\nTumaningiz: {tuman}\nMaktabingiz: {maktab}\nUqtuvchingiz: {uqtuvchi}\nUqtuvchingiz telefoni: {phone_number}\nSizning FISH: {fish}")
     # await callback_query.message.answer_photo(kanal_data, photo=photo1, caption=f"Tumaningiz: {tuman}\nMaktabingiz: {maktab}\nUqtuvchingiz: {uqtuvchi}\nUqtuvchingiz telefoni: {phone_number}\nSizning FISH: {fish}")
     await callback_query.message.answer("Movfaqiyatli ro'yhatdan o'tdingiz!")
     t_ism = f"{tuman}  {maktab}  {uqtuvchi}  {phone_number}  {fish}  + "
-    fayl_6(t_ism=t_ism)
+    fayl_4(t_ism=t_ism)
     await state.finish()
